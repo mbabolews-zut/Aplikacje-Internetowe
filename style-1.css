@@ -1,4 +1,18 @@
 
+#debug-div{
+    position: fixed;
+    top: 0;
+    background: rgb(254, 230, 230);
+    border: 4px solid red;
+    padding: 4px;
+    font-size: small;
+    display: none;
+}
+
+a {
+    text-decoration: none;
+}
+
 h1, h2 {
     font-family: "Playwrite AU VIC", cursive;
     font-optical-sizing: auto;
@@ -10,9 +24,22 @@ h1 {
 h2 {
     font-weight: 300;
 }
+p + p {
+    text-indent: 1.5em;
+}
+
+section h2 {
+    background: #00b2ff;
+    background: linear-gradient(90deg,rgba(59, 167, 255, 0.381) 0%, rgba(255, 255, 255, 0) 91%);
+    border-left: 4px solid blue;
+    padding-left: 0.5em;
+    border-radius: 2px;
+}
+
 body {
     margin: 0;
-    background-color: #9afff3;
+    background-color: #82c0ff;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
 }
 
 header {
@@ -22,7 +49,19 @@ header {
     text-align: center;
     margin: 0;
     padding: 2em;
+    color: rgb(23, 23, 23);
+
+  /*color: #444;*/
+  text-shadow: 
+    1px 0px 1px #bbb, 0px 1px 1px #ddd, 
+    2px 1px 1px #bbb, 1px 2px 1px #ddd,
+    3px 2px 1px #bbb, 2px 3px 1px #ddd,
+    4px 3px 1px #bbb, 3px 4px 1px #ddd,
+    5px 4px 1px #bbb, 4px 5px 1px #ddd,
+    6px 5px 1px #bbb, 5px 6px 1px #ddd,
+    7px 6px 1px #bbb, -2px -2px 4px #ddd;
 }
+
 nav {
     margin-top: -8px;
 }
@@ -33,7 +72,7 @@ nav ul {
     overflow: hidden;
     background: #020024;
     background: linear-gradient(6deg,rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 43%, rgba(0, 212, 255, 1) 100%);
-    border-radius: 8px;
+    border-radius: 8px 8px 0 0;
 }
 nav li {
     float: left;
@@ -45,7 +84,170 @@ nav a {
     padding: 16px;
     text-decoration: none;
 }
+
 main {
+    padding-top: 2em;
+    background-color: white;
+}
+
+.wrapper {
+    width: 800px;
     margin: 0 auto;
-    width: 1200px;
+}
+
+.first-word {
+    font-size: large;
+    font-weight: bolder;
+}
+
+article {
+    margin-bottom: 4em;
+}
+article h2 {
+    text-decoration: underline;
+}
+
+article {
+    border: 2px double #50d0ff;
+    border-radius: 6px;
+    padding: 1em;
+    background-color: rgba(208, 233, 255, 0.209);
+}
+
+section {
+    padding-bottom: 1em;
+}
+
+section#our-clouds  {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.cloud-desc p {
+    width: 50%;
+    padding-left: 1em;
+}
+
+.cloud-desc {
+    background-color: aliceblue;
+    padding-bottom: 0.5em; 
+    padding-right: 1.5em;
+    border-radius: 5px 0 0 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    background-position: right 30px center;
+    background-size: 30%;
+}
+
+.cloud-desc h3 {
+    background: linear-gradient(90deg,rgba(0, 191, 255, 0.794) 0%,
+     rgba(255, 255, 255, 0) 85%);
+     padding-left: 1em;
+     text-shadow: 0px 0px 5px white, 0px 0px 8px white;
+     border-radius: 5px 0;
+}
+
+
+table{
+    border: 2px dashed rgba(3, 39, 244, 0.473);
+}
+td {
+    padding: 0.5em;
+}
+#pricing table {
+    margin: 0 auto;
+}
+
+#pricing tr:nth-of-type(2n){
+    background-color: aliceblue;
+}
+
+#pricing tr:nth-child(1){
+    background-color: #8eddff !important;
+}
+
+#pricing tr:nth-of-type(2n-1){
+    background-color: #cff0fe;
+}
+
+#pricing tr td:nth-of-type(3){
+    text-align: center;
+}
+
+#pricing th:nth-of-type(3){
+    padding: 4px;
+}
+
+.cloud-desc:nth-of-type(1){
+    background-image: url("style1-clouds/clouds.png");
+}
+
+.cloud-desc:nth-of-type(2){
+    background-image: url("style1-clouds/cloud.png");
+}
+
+.cloud-desc:nth-of-type(3){
+    background-image: url("style1-clouds/sun.png");
+}
+
+.cloud-desc:nth-of-type(4){
+    background-image: url("style1-clouds/cloudy.png");
+}
+
+.cloud-desc:nth-of-type(5){
+    background-image: url("style1-clouds/scattered-thunderstorms.png");
+}
+
+footer {
+
+    padding: 0.5em 1em 2em;
+    color: white;
+    background: #020024;
+    background: linear-gradient(160deg,rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 49%, rgba(0, 212, 255, 1) 100%);
+}
+
+footer a {
+    color:#cff0fe;
+}
+
+
+@media (max-width: 805px) {
+    .wrapper{
+        width: auto;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+}
+
+@media (max-width: 760px){
+    section#our-clouds  {
+        width: auto;
+    }
+
+}
+
+@media (max-width: 552px){
+    nav ul{
+        border-radius: 0px;
+    }
+    nav li {
+        float:none;
+        border-bottom: 1px solid rgb(126, 189, 243);
+    }
+    nav a {
+        padding: 0.8em;
+    }
+}
+
+@media (max-width: 405px){
+    section#our-clouds p{
+        width: auto;
+    }
+    .cloud-desc {
+        padding-bottom: 90px;
+        background-position: bottom center;
+        background-origin: border-box;
+    }
+
 }
