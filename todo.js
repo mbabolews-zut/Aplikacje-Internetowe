@@ -30,10 +30,10 @@ class TodoList {
         if (tasksFromStorage) {
             this.tasks = JSON.parse(tasksFromStorage);
         }
-        this.render();
+        this.draw();
     }
 
-    render(filterText = null) {
+    draw(filterText = null) {
         if (filterText === null) {
             filterText = this.taskFilter;
         }
@@ -96,11 +96,12 @@ class TodoList {
 
                 textDiv.innerHTML = '';
                 dateDiv.innerHTML = '';
-                taskDiv.tabIndex = 0; // Make div focusable
+                textDiv.removeEventListener('click', modifyHandler);
+                dateDiv.removeEventListener('click', modifyHandler);
                 textDiv.appendChild(textInput);
                 dateDiv.appendChild(dateInput);
 
-                e.target.getElementsByTagName("input")[0].focus();
+                e.target.getElementsByTagName("input")[0]?.focus();
 
                 let timeoutId;
 
@@ -110,7 +111,7 @@ class TodoList {
                     } catch (e) {
                         alert(e.message);
                     }
-                    this.render();
+                    this.draw();
                 };
 
                 const handleFocusOut = (e) => {
@@ -140,7 +141,7 @@ class TodoList {
             deleteButton.addEventListener('click', () => {
                 this.tasks = this.tasks.filter(t => t.uid !== task.uid);
                 localStorage.setItem('todo-tasks', JSON.stringify(this.tasks));
-                this.render();
+                this.draw();
             });
             actionsDiv.appendChild(deleteButton);
 
@@ -170,7 +171,7 @@ class TodoList {
 
         this.tasks.push(task);
         localStorage.setItem('todo-tasks', JSON.stringify(this.tasks));
-        this.render();
+        this.draw();
     }
 
     modifyTask(uid, newText, newDate) {
@@ -183,7 +184,7 @@ class TodoList {
         task.text = newText;
         task.date = newDate;
         localStorage.setItem('todo-tasks', JSON.stringify(this.tasks));
-        this.render();
+        this.draw();
     }
 }
 todoList = new TodoList(taskListDiv);
