@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Map Puzzle</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""
+    ></script>
+
+    <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
+
+    <!-- Leaflet-image (latest) -->
+    <script src="https://unpkg.com/leaflet-image@latest/leaflet-image.js"></script>
+
+
+</head>
+<body>
+<main>
+    <div id="displays" class="grid-col-2">
+        <figure id="map">
+
+        </figure>
+        <div id="puzzle-box">
+        </div>
+        <menu>
+            <button id="getLocation">Get Current Location</button>
+            <button id="saveButton">Save Raster Map</button>
+        </menu>
+    </div>
+    <div id="frag-table">
+        <!-- div class="frag"></div -->
+    </div>
+</main>
+<script>
+    let map = L.map('map', {attributionControl: false}).setView([53.430127, 14.564802], 18);
+    // L.tileLayer.provider('OpenStreetMap.DE').addTo(map);
+    L.tileLayer.provider('Esri.WorldImagery').addTo(map);
+    let marker = L.marker([53.430127, 14.564802]).addTo(map);
+    marker.bindPopup("<strong>Hello!</strong><br>This is a popup.");
+
+    const fragTable = document.getElementById("frag-table");
+    const puzzleBox = document.getElementById("puzzle-box");
+
+    var correct = 0;
+
+    function handleGameWin(){
+
+        if (correct === 16){
+            // Notification
+            if (Notification.permission === "granted"){
+                const notification = new Notification("Congratulations! You've won!");
+            } else {
+                window.alert("windows.alert: Congratulations! You've won!");
+            }
+        }
+    }
+
+    document.getElementById("saveButton").addEventListener("click", function () {
+        correct = 0;
+        leafletImage(map, function (err, canvas) {
+            // Ask for notification perm
+            Notification.requestPermission();
+            puzzleBox.innerHTML = ""; // clear puzzle box
+            fragTable.innerHTML = ""; // clear frag table
+
+            // create 16 divs class frag with canvases
+            for (let i = 0; i < 16; i++) {
+                let fragDiv = document.createElement("div");
+                fragDiv.classList.add("frag");
+                let fragCanvas = document.createElement("canvas");
+                let w = canvas.width / 4;
+                let h = Math.floor(canvas.height / 4);
+                fragCanvas.width = w;
+                fragCanvas.height = h;
+                let fragContext = fragCanvas.getContext("2d");
+
+                // draw different parts of the canvas onto the fragCanvas
+                let x = i % 4;
+                let y = Math.floor(i / 4);
+                fragContext.drawImage(
+                    canvas, x * w, y * h, w, h, 0, 0, w, h);
+
+                fragDiv.draggable = true;
+                fragDiv.setAttribute("data-idx", i);
+                fragDiv.addEventListener('dragstart', function (event) {
+                    console.log(event.target.getAttribute("data-idx"));
+                    event.dataTransfer.setData("text", event.target.getAttribute("data-idx"));
+                });
+                fragDiv.style.height = h + "px";
+                fragDiv.appendChild(fragCanvas);
+                fragTable.appendChild(fragDiv);
+
+                // puzzle box divs
+                let puzzleDiv = document.createElement("div");
+                puzzleDiv.setAttribute("data-match", i);
+                puzzleDiv.ondragover = function (event) {
+                    event.preventDefault();
+                };
+                puzzleDiv.ondrop = function (event) {
+                    const slot = event.currentTarget;
+
+                    const idx = event.dataTransfer.getData("text");
+                    const frag = fragTable.querySelector(`div[data-idx='${idx}']`);
+                    if (!frag) {
+                        console.error("No fragment found to drop.");
+                        return;
+                    }
+                    const matched = idx === slot.getAttribute("data-match");
+                    console.log("matched: " + matched);
+
+                    // If there’s already a fragment here, move it back to the table
+                    const existingFrag = slot.querySelector(".frag");
+                    if (existingFrag) {
+                        fragTable.appendChild(existingFrag);
+                        if(!matched) {
+                            const prevMatched = existingFrag.getAttribute("data-idx") === slot.getAttribute("data-match");
+                            if (prevMatched){
+                                correct--;
+                            }
+                        }
+                        slot.innerHTML = ""; // clear slot
+
+                    }
+                    if(matched) {
+                        correct++;
+                        handleGameWin();
+                    }
+
+                    slot.style.height = h + "px";
+                    // Place dragged fragment into this slot
+                    slot.appendChild(frag);
+                };
+                puzzleBox.appendChild(puzzleDiv);
+            }
+            // --- Enable drag & drop reordering inside fragTable ---
+            fragTable.ondragover = (event) => event.preventDefault();
+
+            fragTable.ondrop = function (event) {
+                event.preventDefault();
+                const idx = event.dataTransfer.getData("text");
+                const frag = document.querySelector(`.frag[data-idx='${idx}']`);
+                if (!frag) return;
+
+                // If dropped on another fragment, insert before it
+                const targetFrag = event.target.closest(".frag");
+                if (targetFrag && targetFrag !== frag) {
+                    fragTable.insertBefore(frag, targetFrag);
+                } else {
+                    // Otherwise, append to the end
+                    fragTable.appendChild(frag);
+                }
+            };
+        });
+    });
+
+    document.getElementById("getLocation").addEventListener("click", function (event) {
+        if (!navigator.geolocation) {
+            console.log("No geolocation.");
+        }
+
+        navigator.geolocation.getCurrentPosition(position => {
+            console.log(position);
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+
+            map.setView([lat, lon]);
+        }, positionError => {
+            console.error(positionError);
+        });
+    });
+</script>
+</body>
+</html>

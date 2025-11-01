@@ -1,0 +1,74 @@
+
+* {
+    box-sizing: border-box;
+}
+:root {
+    --placeholder-img: none;
+    --map-height: 300px;
+    --site-width: 1000px;
+}
+
+body {
+    margin: 2px;
+}
+
+.grid-col-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#displays {
+    grid-template-rows: var(--map-height);
+    gap: 10px;
+    row-gap: 0;
+    margin-bottom: 3em;
+}
+
+#puzzle-box, #displays > figure {
+    border: 1px solid black;
+}
+
+#puzzle-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+#puzzle-box div.frag {
+    border: none;
+}
+
+figure {
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto min-content;
+}
+
+menu {
+    padding: 0; 
+    margin: 0;
+}
+
+#frag-table {
+    display: flex;
+    flex-wrap: wrap;
+    background: lightskyblue;
+    gap: 2px;
+    padding: 4px;
+    min-height: calc(var(--map-height) / 4);
+}
+
+.frag {
+    display: inline-block;
+    /*height: calc(var(--map-height) / 4);
+    width: calc((var(--site-width) - 14px) / 8); */
+    background-image: var(--placeholder-img);
+    background-size: contain;
+    border: 2px solid #333;
+    box-sizing: content-box;
+}
+
+main{
+    margin: 0 auto;
+    max-width: var(--site-width);
+}
+
