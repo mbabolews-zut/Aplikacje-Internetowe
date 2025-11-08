@@ -29,10 +29,16 @@
         <div id="puzzle-box">
         </div>
         <menu>
-            <button id="getLocation">Get Current Location</button>
-            <button id="saveButton">Save Raster Map</button>
+            <button id="getLocation">Moja lokalizacja</button>
+            <button id="saveButton">Pobierz mapę</button>
         </menu>
     </div>
+    <details>
+        <summary>mapa rastrowa</summary>
+        <canvas id="rasterMap" width="250" height="150"></canvas>
+    </details>
+    <br>
+
     <div id="frag-table">
         <!-- div class="frag"></div -->
     </div>
@@ -44,17 +50,29 @@
     let marker = L.marker([53.430127, 14.564802]).addTo(map);
     marker.bindPopup("<strong>Hello!</strong><br>This is a popup.");
 
+    const rasterMap = document.getElementById('rasterMap');
     const fragTable = document.getElementById("frag-table");
     const puzzleBox = document.getElementById("puzzle-box");
 
     var correct = 0;
 
-    function handleGameWin(){
+    // Source - https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+    // Posted by Laurens Holst, modified by community. See post 'Timeline' for change history
+    // Retrieved 2025-11-08, License - CC BY-SA 4.0
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
 
-        if (correct === 16){
+
+    function handleGameWin() {
+
+        if (correct === 16) {
             // Notification
-            if (Notification.permission === "granted"){
-                const notification = new Notification("Congratulations! You've won!");
+            if (Notification.permission === "granted") {
+                new Notification("Congratulations! You've won!");
             } else {
                 window.alert("windows.alert: Congratulations! You've won!");
             }
@@ -68,6 +86,11 @@
             Notification.requestPermission();
             puzzleBox.innerHTML = ""; // clear puzzle box
             fragTable.innerHTML = ""; // clear frag table
+
+            let rasterMapCtx = rasterMap.getContext("2d");
+            rasterMapCtx.drawImage(canvas, 0, 0, rasterMap.width, rasterMap.height);
+
+            let fragDivs = [];
 
             // create 16 divs class frag with canvases
             for (let i = 0; i < 16; i++) {
@@ -89,12 +112,13 @@
                 fragDiv.draggable = true;
                 fragDiv.setAttribute("data-idx", i);
                 fragDiv.addEventListener('dragstart', function (event) {
-                    console.log(event.target.getAttribute("data-idx"));
+                    console.log(`dragged idx: ${event.target.getAttribute("data-idx")}`);
                     event.dataTransfer.setData("text", event.target.getAttribute("data-idx"));
                 });
                 fragDiv.style.height = h + "px";
                 fragDiv.appendChild(fragCanvas);
-                fragTable.appendChild(fragDiv);
+                fragDivs.push(fragDiv);
+                //fragTable.appendChild(fragDiv);
 
                 // puzzle box divs
                 let puzzleDiv = document.createElement("div");
@@ -106,10 +130,16 @@
                     const slot = event.currentTarget;
 
                     const idx = event.dataTransfer.getData("text");
-                    const frag = fragTable.querySelector(`div[data-idx='${idx}']`);
+                    let frag = fragTable.querySelector(`div[data-idx='${idx}']`);
+                    let reloc = false;
                     if (!frag) {
-                        console.error("No fragment found to drop.");
-                        return;
+                        reloc = true;
+                        frag = puzzleBox.querySelector(`div[data-idx='${idx}']`);
+
+                        if (!frag) {
+                            console.error("No fragment found to drop.");
+                            return;
+                        }
                     }
                     const matched = idx === slot.getAttribute("data-match");
                     console.log("matched: " + matched);
@@ -118,19 +148,26 @@
                     const existingFrag = slot.querySelector(".frag");
                     if (existingFrag) {
                         fragTable.appendChild(existingFrag);
-                        if(!matched) {
+                        if (!matched) {
                             const prevMatched = existingFrag.getAttribute("data-idx") === slot.getAttribute("data-match");
-                            if (prevMatched){
+
+                            if (prevMatched) {
                                 correct--;
                             }
                         }
                         slot.innerHTML = ""; // clear slot
 
                     }
-                    if(matched) {
+                    if (matched) {
                         correct++;
                         handleGameWin();
+                    } else if (reloc) {
+                        let prevMatchedQSel = puzzleBox.querySelector(`div[data-match='${idx}'] div[data-idx='${idx}']`);
+                        if (prevMatchedQSel) {
+                            correct--;
+                        }
                     }
+                    console.log(`correct: ${correct}/16`);
 
                     slot.style.height = h + "px";
                     // Place dragged fragment into this slot
@@ -138,6 +175,15 @@
                 };
                 puzzleBox.appendChild(puzzleDiv);
             }
+
+            // shuffle array randomly
+            shuffleArray(fragDivs);
+
+            // add fragments to the table
+            for (let f in fragDivs) {
+                fragTable.appendChild(fragDivs[f]);
+            }
+
             // --- Enable drag & drop reordering inside fragTable ---
             fragTable.ondragover = (event) => event.preventDefault();
 
@@ -159,7 +205,7 @@
         });
     });
 
-    document.getElementById("getLocation").addEventListener("click", function (event) {
+    document.getElementById("getLocation").addEventListener("click", function () {
         if (!navigator.geolocation) {
             console.log("No geolocation.");
         }
@@ -170,6 +216,11 @@
             let lon = position.coords.longitude;
 
             map.setView([lat, lon]);
+
+            marker = L.marker([lat, lon]).addTo(map);
+            marker.bindPopup(`latitude: ${lat}, longitude: ${lon}`);
+            marker.openPopup();
+
         }, positionError => {
             console.error(positionError);
         });

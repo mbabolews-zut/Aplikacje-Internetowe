@@ -32,6 +32,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-gap: 1px;
 }
 #puzzle-box div.frag {
     border: none;
@@ -72,3 +73,13 @@ main{
     max-width: var(--site-width);
 }
 
+details {
+    background-color: #dfdfdf;
+}
+
+summary {
+    font-size: 10pt;
+}
+details canvas {
+    border: 1px solid black;
+}
