@@ -1,33 +1,366 @@
+:root {
+    --footer-height: 100px;
+}
+body {
+    background-image: url("img/weather-bg.jpg"); /* Image by Karl Egger from Pixabay */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+}
+
+.carattere-regular {
+    font-family: "Carattere", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#site-content {
+    min-height: calc(100vh - var(--footer-height));
+    padding-bottom: 1em;
+    box-sizing: border-box;
+}
+
 header {
     text-align: center;
-    text-shadow:
-            darkmagenta 1px 1px 1px,
-            blueviolet 2px 2px 5px;
     font-family: Arial, serif;
     font-weight: lighter;
+    background: #ffffff14;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid #ffffff26;
+    padding: 1.5em 1em;
+    box-shadow: 0 8px 20px #0000001a, inset 0 1px 0 #ffffff4d;
+    text-shadow:
+            0 0 12px #162023c2,
+            1px 1px 0 #506e96b0,
+            2px 1px 1px #5b7699cc,
+            2px 2px 1px #4257d4,
+            3px 2px 2px #2b3d58d9,
+            3px 3px 1px #1f2c40d9,
+            4px 3px 2px #141c29e6,
+            4px 4px 3px #141c29f2,
+            -2px -2px 6px #dcebff99;
 }
+
+header h1 {
+    font-size: 3.5em;
+    color: #ffffff;
+    margin: 0.2em 0 0.1em 0;
+}
+
 main {
     margin: 0 auto;
-    width: 900px;
+    max-width: 900px;
+    min-width: max-content;
+    padding: 0 1em;
 }
-#search-div {
-    background-color: azure;
-    border-radius: 12px;
-    width: 400px;
-    border: aqua 1px solid;
-    padding: 2em;
+
+footer {
+    height: var(--footer-height);
+    padding: 1em;
+    background: #ffffffcc;
+    box-sizing: border-box;
+}
+
+footer#site-footer {
+    background: linear-gradient(rgba(255,255,255, 0.1), rgba(255,255,255, 0.3));
+    text-shadow: #091828 1px 1px 1px, 0 0 5px #091828, 0 0 10px #091828;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 1rem 0.8rem;
+    text-align: center;
+    color: #fff;
+    height: var(--footer-height);
+}
+
+.footer-inner {
+    max-width: 900px;
     margin: 0 auto;
 }
+
+#search-div {
+    background: #00a1ff4d;
+    backdrop-filter: blur(4px);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #87cefaa6;
+    padding: 2.5em 2em;
+    margin: 0 auto;
+    box-shadow: inset 0 -1px 2px #0000000d;
+    position: relative;
+    box-sizing: border-box;
+}
+
 #search-div button {
     display: block;
     width: 50%;
-    margin: 0 auto;
-    margin-top: 1em;
-    padding: 0.4em;
-    font-size: 1.1em;
+    min-width: 120px;
+    margin: 1.5em auto 0;
+    padding: 0.6em 1em;
+    font-size: 1.3em;
+    text-shadow: 1px 1px 2px #adadad, 2px 1px 3px #ffffff;
+    background: linear-gradient(155deg, #ffffffbf, #ffffffa6);
+    border: 2px solid #eee7e7;
+    border-radius: 6px;
+    color: #234;
+    font-weight: 600;
+    box-shadow: 0 8px 20px #64509640, inset 0 1px 0 #ffffff4d;
+    transition: all 0.3s ease;
+    position: relative;
+    font-family: "Carattere", cursive;
 }
+
+#search-div button:hover {
+    background: linear-gradient(155deg, #fffffff2, #fffffffc);
+    box-shadow: 0 12px 28px #f7f5ff59, inset 0 1px 0 #ffffff66, inset 0 -2px 4px #0000001a;
+}
+
+#search-div button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px #ffffff, inset 0 1px 0 #ffffff4d, inset 0 -1px 3px #00000026;
+}
+
 #search-div input {
-    padding: 0.5em;
+    padding: 0.7em 1em;
     font-size: 1em;
     width: 100%;
+    background: #ffffff99;
+    border: 1px solid #87cefa66;
+    border-radius: 12px;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+    box-shadow: inset 0 2px 4px #0000000d, inset 0 1px 0 #ffffff80;
+}
+
+#search-div input:focus {
+    outline: none;
+    background: #fffffff2;
+    border-color: #1e90ffcc;
+    box-shadow: 0 0 16px #1e90ff4d, inset 0 2px 4px #0000000d, inset 0 1px 0 #ffffff80;
+}
+
+.weather-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0.4em;
+    background: #ffffffa6;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 10px;
+    border: 1px solid #ffffff8c;
+    box-shadow:
+            0 12px 32px #14233c1f,
+            0 6px 16px #1e3c6414,
+            inset 0 1px 0 #ffffff99,
+            inset 0 -1px 2px #0000000d;
+    padding: 0.8em 1em;
+    max-width: 600px;
+    margin: 4px auto;
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+.weather-box:hover {
+    background: #ffffffe6;
+}
+
+.weather-div {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    flex-wrap: wrap;
+}
+
+.when-label {
+    background: linear-gradient(90deg, #ffffffcc, #ffffff99);
+    padding: 0.5em 1em;
+    border-radius: 16px;
+    text-align: center;
+    font-weight: 600;
+    color: #091828;
+    font-size: 0.95rem;
+    box-shadow:
+            inset 0 1px 2px #ffffffcc,
+            inset 0 -2px 4px #00000014,
+            0 4px 12px #1e3c641a;
+    border: 1px solid #ffffff66;
+    width: fit-content;
+    margin: 0 auto 0.8em auto;
+    display: block;
+    font-family: "Roboto", sans-serif;
+}
+
+.when-label::before,
+.when-label::after {
+    content: '---';
+    color: #3c0a3c73;
+    margin: 0 0.6em;
+    font-weight: 600;
+}
+
+.when-label::before {
+    margin-right: 0.8em;
+}
+
+.when-label::after {
+    margin-left: 0.8em;
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+    image-rendering: auto;
+    filter: drop-shadow(0 4px 8px #00000033) drop-shadow(0 2px 4px #00000026);
+}
+
+.weather-desc {
+    font-size: 1.1em;
+    color: #333;
+    text-transform: capitalize;
+}
+
+.weather-params > div {
+    display: inline-block;
+    margin: 0 0.1em;
+}
+
+.temp-div {
+    background: linear-gradient(90deg, #ffffffb3, #ffffff4d);
+    padding: 0.4em 0.8em;
+    border-radius: 8px;
+    min-width: 84px;
+    text-align: center;
+    box-shadow:
+            inset 0 1px 2px #ffffffcc,
+            inset 0 -2px 4px #00000014,
+            0 4px 12px #1e3c641a;
+    border: 1px solid #ffffff66;
+}
+
+.temp-text {
+    font-weight: 700;
+    color: #1e5fa8;
+    font-size: 1.05rem;
+}
+
+.pressure-div {
+    background: linear-gradient(90deg, #ffffffb3, #ffffff4d);
+    padding: 0.4em 0.8em;
+    border-radius: 8px;
+    min-width: 84px;
+    text-align: center;
+    box-shadow:
+            inset 0 1px 2px #ffffffcc,
+            inset 0 -2px 4px #00000014,
+            0 4px 12px #1e3c641a;
+    border: 1px solid #ffffff66;
+}
+
+.pressure-text {
+    font-weight: 700;
+    color: #1e5fa8;
+    font-size: 1.05rem;
+}
+
+span.weather-desc {
+    text-shadow: 0 0 3px white, 0 0 8px white;
+    width: 178px;
+}
+
+#forecast {
+    display: block;
+    flex-direction: column;
+    margin-top: 1.5em;
+}
+
+#forecast .when-label {
+    margin-top: 2em;
+}
+
+#forecast .when-label:first-child {
+    margin-top: 0;
+}
+
+#forecast .weather-box {
+    margin: 0 auto 1px;
+}
+
+/* Responsive styles */
+@media (max-width: 659px) {
+    header h1 {
+        font-size: 2.5em;
+    }
+
+    main {
+        min-width: auto;
+    }
+
+    #search-div {
+        padding: 1.5em 1em;
+    }
+
+    .weather-box {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8em;
+        padding: 1em;
+        max-width: 100%;
+    }
+
+    .weather-div {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .temp-div,
+    .pressure-div {
+        min-width: 84px;
+    }
+
+    span.weather-desc {
+        width: auto;
+    }
+
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 2em;
+    }
+
+    #search-div {
+        padding: 1.2em 0.8em;
+    }
+
+    #search-div button {
+        width: 70%;
+        font-size: 1.1em;
+    }
+
+    .weather-box {
+        padding: 0.8em;
+    }
+
+    .weather-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .weather-desc {
+        font-size: 1em;
+    }
+
+    .temp-text,
+    .pressure-text {
+        font-size: 0.95rem;
+    }
+
+    .when-label {
+        font-size: 0.85rem;
+        padding: 0.4em 0.8em;
+    }
 }
