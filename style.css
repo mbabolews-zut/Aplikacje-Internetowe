@@ -1,0 +1,33 @@
+header {
+    text-align: center;
+    text-shadow:
+            darkmagenta 1px 1px 1px,
+            blueviolet 2px 2px 5px;
+    font-family: Arial, serif;
+    font-weight: lighter;
+}
+main {
+    margin: 0 auto;
+    width: 900px;
+}
+#search-div {
+    background-color: azure;
+    border-radius: 12px;
+    width: 400px;
+    border: aqua 1px solid;
+    padding: 2em;
+    margin: 0 auto;
+}
+#search-div button {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 1em;
+    padding: 0.4em;
+    font-size: 1.1em;
+}
+#search-div input {
+    padding: 0.5em;
+    font-size: 1em;
+    width: 100%;
+}

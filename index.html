@@ -2,32 +2,25 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>TODO List</title>
-    <script src="todo.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
+    <title>Siermiężna Pogoda</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="todo-container">
-    <div class="search-bar">
-        <input type="text" id="search-input">
-    </div>
-    <div id="tasks">
-        <div class="task">
-            <div><input type="checkbox" class="task-checkbox"></div>
-            <div class="task-text">Sample Task</div>
-            <div class="task-date">2023-10-01</div>
-            <div class="task-actions">
-                <button class="delete-button">Usuń</button>
-            </div>
+    <header>
+        <h1>Siermiężna Pogoda</h1>
+    </header>
+    <main>
+        <div id="search-div">
+            <input id="address-input" type="text" placeholder="Szczytno" aria-label="miejscowość">
+            <button id="submit-btn">Pogoda</button>
         </div>
-    </div>
-    <div class="add-task-bar" id="add-tasks-div">
-        <div><input type="text" id="new-task-text-input" placeholder="Do zrobienia..."></div>
-        <div><input type="date" id="new-task-date-input" placeholder="2000-01-D01"></div>
-        <div class="right">
-            <button id="add-button">Add</button>
-        </div>
-    </div>
-</div>
+        <br>
+        <section id="error-section"></section>
+        <section id="weather">
+            <div id="current-weather"></div>
+            <div id="forecast"></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
 </body>
 </html>
