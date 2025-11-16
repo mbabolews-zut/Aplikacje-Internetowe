@@ -1,0 +1,44 @@
+.color-sample {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid #888;
+  margin-left: 1em;
+
+
+}
+
+div.color-picker {
+  display: inline-block;
+  border: 1px solid #ccc;
+  padding: 1em;
+}
+
+.color-picker input {
+  border-radius: 5px;
+  position: relative;
+  bottom: 20px;
+  width: 6em;
+}
+
+.color-box {
+  display: flex;
+  direction: ltr;
+  border-bottom: 1px solid #ccc;
+}
+
+@media (min-width: 460px) {
+  .color-box > :first-child {
+    min-width: 350px;
+  }
+}
+
+.color-box .color-sample {
+  position: relative;
+  top: 24px;
+}
+
+.color-box ul.action-list, .color-box ul.action-list > li {
+  margin-bottom: 1em;
+}
